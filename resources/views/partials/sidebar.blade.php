@@ -51,6 +51,52 @@
             </li>
             @endcan
 
+            @can('tasks_manage')
+            <li class="treeview">
+                <a href="#">
+                    <i class="fa fa-users"></i>
+                    <span class="title">@lang('global.tasks-management.title')</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+
+                    <li class="{{ $request->segment(2) == 'tasks' ? 'active active-sub' : '' }}">
+                        <a href="{{ route('admin.tasks.index') }}">
+                            <i class="fa fa-briefcase"></i>
+                            <span class="title">
+                                @lang('global.tasks.title')
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            @endcan
+
+            @can('questions_manage')
+            <li class="treeview">
+                <a href="#">
+                    <i class="fa fa-users"></i>
+                    <span class="title">@lang('global.questions_manage.title')</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+
+                    <li class="{{ $request->segment(2) == 'tasks' ? 'active active-sub' : '' }}">
+                        <a href="{{ route('admin.questions.index') }}">
+                            <i class="fa fa-briefcase"></i>
+                            <span class="title">
+                                @lang('global.questions.title')
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            @endcan
+
             <li class="{{ $request->segment(1) == 'change_password' ? 'active' : '' }}">
                 <a href="{{ route('auth.change_password') }}">
                     <i class="fa fa-key"></i>

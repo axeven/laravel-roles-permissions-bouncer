@@ -1,7 +1,9 @@
 <?php
 
 return [
-
+    'action' => [
+        'more' => 'Selengkapnya'
+    ],
     'questions_manage' => [
         'title' => 'Question Management',
         'created_at' => 'Time',
@@ -88,9 +90,13 @@ return [
     'app_dashboard' => 'Dashboard',
     'app_delete' => 'Delete',
     'global_title' => 'Roles-Permissions Manager',
-    'about' => 'About',
-    'company_list' => 'Companies',
-    'events' => 'Events',
-    'mentors' => 'Mentors',
-    'login' => 'Login',
+    'about' => 'Tentang Kami',
+    'company_list' => 'Direktori Bisnis',
+    'events' => 'Event',
+    'mentors' => 'Mentor',
+    'login' => 'Masuk',
+    'start_your_plan' => 'Kembangkan Bisnis Anda',
+    'event_desc' => 'Ikuti event dan kembangkan jaringan bisnis anda.',
+    'sitename' => 'Sitename',
+    'contact_us' => 'Hubungi Kami',
 ];
