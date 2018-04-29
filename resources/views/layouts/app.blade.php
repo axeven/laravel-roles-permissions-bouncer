@@ -16,7 +16,14 @@
                     <li><a href="#">{{ trans('global.company_list') }}</a></li>
                     <li><a href="#">{{ trans('global.events') }}</a></li>
                     <li><a href="#">{{ trans('global.mentors') }}</a></li>
-                    <li><a href="#">{{ trans('global.login') }}</a></li>
+                    @can('questions_manage')
+                        <li><a href="{{ route('admin.questions.index') }}">{{ trans('global.questions.title') }}</a></li>
+                    @endcan
+                    @if(Auth::guest())
+                        <li><a id="login" href="#">{{ trans('global.login') }}</a></li>
+                    @else
+                        <li><a href="#logout" onclick="$('#logout').submit()" >{{ trans('global.app_logout') }}</a></li>
+                    @endif
                 </ul>
             </div>
         </div>
@@ -28,69 +35,7 @@
     </div>
 </header>
 <div class="container">
-    <div class="row no-margin-bottom">
-        <div class="col l12">
-            <h3>{{ trans('global.events') }}</h3>
-            <div class="row no-margin-bottom">
-                <div class="col l6">
-                    <div class="card">
-                        <div class="card-image">
-                            <img src="{{ url('images/startup.jpg') }}">
-                            <span class="card-title black-text"></span>
-                        </div>
-                        <div class="card-content">
-                            <p>
-                                Seminar tentang bagaimana cara mengembangkan bisnis yang baik.
-                            </p>
-                        </div>
-                        <div class="card-action">
-                            <a href="#"> {{ trans('global.action.more') }}</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col l6">
-                    <div class="card">
-                        <div class="card-image">
-                            <img src="{{ url('images/startup.jpg') }}">
-                            <span class="card-title black-text"></span>
-                        </div>
-                        <div class="card-content">
-                            <p>
-                                Workshop marketing online menggunakan Facebook.
-                            </p>
-                        </div>
-                        <div class="card-action">
-                            <a href="#"> {{ trans('global.action.more') }}</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col l12">
-            <h3>{{ trans('global.about') }}</h3>
-                <div class="card">
-                    <div class="card-content">
-                        <div class="row no-margin-bottom">
-                            <div class="col l8">
-                                <p>&nbsp;</p>
-                                <p>
-                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolores aspernatur saepe, provident et possimus, nulla autem voluptates asperiores, nisi soluta magnam pariatur eligendi illum veniam facilis? Aliquam distinctio est voluptatum?
-                                </p>
-                                <p>&nbsp;</p>
-                                <p>
-                                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Architecto itaque repudiandae quasi corrupti fuga nesciunt obcaecati, tempora expedita veritatis quam. Corrupti incidunt rerum minima animi temporibus dolor deleniti ullam voluptatum!
-                                </p>
-                            </div>
-                            <div class="col l4">
-                                <img class="responsive-img" src="{{ url('images/startup.jpg') }}" />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-        </div>
-    </div>
+    @yield('content')
 </div>
 <footer class="page-footer">
     <div class="container">
@@ -112,12 +57,47 @@
     </div>
     <div class="footer-copyright">
         <div class="container">
-            <span class="right">&COPY; 2018 </span>
+            <span class="">&COPY; 2018 </span>
         </div>
     </div>
 </footer>
-<div id="login-modal" class="modal">
-    
-</div>
+@if(Auth::guest())
+    <div id="login-modal" class="modal" style="max-width:600px">
+        <form action="{{ url('login') }}" method="POST">
+            <div class="modal-content">
+                <h4>{{ trans('global.login') }}</h4>
+                <input type="hidden" name="_token" value="{{ csrf_token() }}"/>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input id="email" type="email" class="validate" value="{{ old('email') }}" name="email" >
+                        <label for="email">Email</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input id="password" type="password" class="validate" name="password">
+                        <label for="password">Password</label>
+                    </div>
+                </div>
+                <p>
+                    <label>
+                        <input type="checkbox"  name="remember" />
+                        <span>Remember me</span>
+                    </label>
+                </p>
+            </div>
+            <div class="modal-footer">
+                <a href="{{ route('auth.password.reset') }}" class="modal-action waves-effect waves-green btn-flat">Forgot Password</a>
+                <button type="submit" class="modal-action waves-effect waves-green btn-flat">Login</a>
+            </div>
+        </form>
+    </div>
+@endif
+@include('partials.javascripts') 
+@if(!Auth::guest())
+    {!! Form::open(['route' => 'auth.logout', 'style' => 'display:none;', 'id' => 'logout']) !!}
+    <button type="submit">@lang('global.logout')</button>
+    {!! Form::close() !!}
+@endif
 </body>
 </html>
