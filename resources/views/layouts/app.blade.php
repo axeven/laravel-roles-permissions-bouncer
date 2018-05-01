@@ -28,11 +28,13 @@
             </div>
         </div>
     </nav>
-    <div id="header-image" class="center-align">
-        <div class="banner-btn" >
-            <a href="#" class="btn-large waves-effect waves-light">{{ trans('global.start_your_plan') }}</a>
+    @if( !empty( $show_banner ) )
+        <div id="header-image" class="center-align">
+            <div class="banner-btn" >
+                <a href="#" class="btn-large waves-effect waves-light">{{ trans('global.start_your_plan') }}</a>
+            </div>
         </div>
-    </div>
+    @endif
 </header>
 <div class="container">
     @yield('content')

@@ -19,6 +19,7 @@
 <link href="{{ url('jquery-ui-1.12.1.custom/jquery-ui.css') }}" rel="stylesheet">
 <link href="{{ url('jquery-ui-1.12.1.custom/jquery-ui.structure.min.css') }}" rel="stylesheet">
 <link href="{{ url('jquery-ui-1.12.1.custom/jquery-ui.theme.min.css') }}" rel="stylesheet">
+<link href="{{ url('jquery-loading/jquery.loading.min.css') }}" rel="stylesheet">
 <style type="text/css">
 #header-image{
       background: url('{{ url('images/startup.jpg') }}') center no-repeat;
