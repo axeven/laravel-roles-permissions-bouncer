@@ -17,7 +17,7 @@
                     <li><a href="#">{{ trans('global.events') }}</a></li>
                     <li><a href="#">{{ trans('global.mentors') }}</a></li>
                     @can('questions_manage')
-                        <li><a href="{{ route('admin.questions.index') }}">{{ trans('global.questions.title') }}</a></li>
+                        <li><a href="{{ route('admin.questions.index') }}">{{ trans('global.questions_manage.title') }}</a></li>
                     @endcan
                     @if(Auth::guest())
                         <li><a id="login" href="#">{{ trans('global.login') }}</a></li>
@@ -29,7 +29,7 @@
         </div>
     </nav>
     <div id="header-image" class="center-align">
-        <div class="highlight" >
+        <div class="banner-btn" >
             <a href="#" class="btn-large waves-effect waves-light">{{ trans('global.start_your_plan') }}</a>
         </div>
     </div>
@@ -63,34 +63,7 @@
 </footer>
 @if(Auth::guest())
     <div id="login-modal" class="modal" style="max-width:600px">
-        <form action="{{ url('login') }}" method="POST">
-            <div class="modal-content">
-                <h4>{{ trans('global.login') }}</h4>
-                <input type="hidden" name="_token" value="{{ csrf_token() }}"/>
-                <div class="row">
-                    <div class="input-field col s12">
-                        <input id="email" type="email" class="validate" value="{{ old('email') }}" name="email" >
-                        <label for="email">Email</label>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="input-field col s12">
-                        <input id="password" type="password" class="validate" name="password">
-                        <label for="password">Password</label>
-                    </div>
-                </div>
-                <p>
-                    <label>
-                        <input type="checkbox"  name="remember" />
-                        <span>Remember me</span>
-                    </label>
-                </p>
-            </div>
-            <div class="modal-footer">
-                <a href="{{ route('auth.password.reset') }}" class="modal-action waves-effect waves-green btn-flat">Forgot Password</a>
-                <button type="submit" class="modal-action waves-effect waves-green btn-flat">Login</a>
-            </div>
-        </form>
+        @include('partials.loginform')
     </div>
 @endif
 @include('partials.javascripts') 

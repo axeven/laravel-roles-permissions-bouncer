@@ -19,4 +19,12 @@ class QuestionController extends Controller
         $links = $questions->appends(['sort' => $sort, 'order' => $order])->links();
         return view('admin.question.index', compact('questions', 'sort', 'order', 'links'));
     }
+
+    public function create(){
+        return view('admin.question.create');
+    }
+
+    public function store(Request $request){
+        return redirect()->route('admin.tasks.show', $task);
+    }
 }

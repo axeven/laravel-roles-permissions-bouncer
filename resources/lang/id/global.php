@@ -4,8 +4,9 @@ return [
     'action' => [
         'more' => 'Selengkapnya'
     ],
+
     'questions_manage' => [
-        'title' => 'Question Management',
+        'title' => 'Atur Pertanyaan',
         'created_at' => 'Time',
         'fields' => [
         ],
@@ -44,16 +45,23 @@ return [
     ],
 
     'questions' => [
-        'title' => 'Questions',
+        'title' => 'Pertanyaan',
         'created_at' => 'Time',
         'fields' => [
             'label' => 'Label',
-            'sentence' => 'Sentence',
+            'sentence' => 'Kalimat',
         ],
         'saved' => 'Question saved',
         'deleted' => 'Question deleted',
+        'label' => 'Label Unik',
+        'sentence' => 'Kalimat',
+        'multichoice' => 'Multi opsi',
     ],
-
+    'answers' => [
+        'name' => 'Jawaban',
+        'score' => 'Skor',
+        'add' => 'Tambah jawaban',
+    ],
     'roles' => [
         'title' => 'Roles',
         'created_at' => 'Time',
@@ -89,7 +97,8 @@ return [
     'app_back_to_list' => 'Back to list',
     'app_dashboard' => 'Dashboard',
     'app_delete' => 'Delete',
-    'global_title' => 'Roles-Permissions Manager',
+
+    'global_title' => 'AppX',
     'about' => 'Tentang Kami',
     'company_list' => 'Direktori Bisnis',
     'events' => 'Event',
@@ -99,4 +108,8 @@ return [
     'event_desc' => 'Ikuti event dan kembangkan jaringan bisnis anda.',
     'sitename' => 'Sitename',
     'contact_us' => 'Hubungi Kami',
+    'forgot_password' => 'Lupa Password',
+    'remember_me' => 'Ingat Saya',
+    'password' => 'Kata kunci',
+    'email' => 'Email',
 ];

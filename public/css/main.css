@@ -4,7 +4,7 @@
     max-width: 1280px;
     width: 90%;
 }
-.highlight{
+.banner-btn{
     display: inline-block;
     text-align: center;
     padding: 18rem 2rem 5rem;
@@ -14,4 +14,7 @@
 }
 .no-margin-bottom{
     margin-bottom: 0 !important;
+}
+.draggable{
+    cursor: move;
 }
