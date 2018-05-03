@@ -6,20 +6,20 @@
 <div id="question-form">
     <div class="row">
         <div class="input-field col s12">
-            <input id="label" type="text" class="validate" value="{{ old('label') }}" name="label" required >
-            <label for="label">{{ trans('global.questions.label') }}</label>
+            <input id="question_label" type="text" class="validate" value="{{ old('label') }}" name="label" required >
+            <label for="question_label">{{ trans('global.questions.label') }}</label>
         </div>
     </div>
     <div class="row">
         <div class="input-field col s12">
-            <input id="sentence" type="text" class="validate" value="{{ old('sentence') }}" name="sentence" required >
-            <label for="sentence">{{ trans('global.questions.sentence') }}</label>
+            <input id="question_sentence" type="text" class="validate" value="{{ old('sentence') }}" name="sentence" required >
+            <label for="question_sentence">{{ trans('global.questions.sentence') }}</label>
         </div>
     </div>
     <div class="row">
         <p class="col s12">
             <label>
-                <input id="multichoice" type="checkbox"  name="multichoice" />
+                <input id="question_multichoice" type="checkbox"  name="multichoice" />
                 <span>{{ trans('global.questions.multichoice') }}</span>
             </label>
         </p>
@@ -52,17 +52,18 @@ $(document).ready(function(){
 
 function saveQuestion(){
     let data = {
+        _token: "{{ csrf_token() }}",
         question: {
-            label: $('#label').val(),
-            sentence: $('#sentence').val(),
-            multichoice: $('#multichoice').is(':checked'),
+            label: $('#question_label').val(),
+            sentence: $('#question_sentence').val(),
+            multichoice: $('#question_multichoice').is(':checked'),
         },
         answers: [],
     };
     var answers = $('.answer-row');
     for (var i=0; i < answers.length; i++ ){
         data.answers.push({
-            sentence: $(answers[i]).find('.answer_sentence').val(),
+            sentence: $(answers[i]).find('.answers_sentence').val(),
             score: Number($(answers[i]).find('.answer_score').val()),
         });
     }
@@ -70,6 +71,19 @@ function saveQuestion(){
     $('#question-form').loading('destroy');
     $('#question-form').loading({
         overlay: $(createOverlay())
+    });
+    $.post("{{ url('/admin/questions') }}", data, function(response){
+        window.location = response.redirect;
+    }).done(function(){
+        $('#question-form').loading('destroy');
+    }).fail(function(response){
+        $('#question-form').loading('destroy');
+        var errors = response.responseJSON;
+        for (var k in errors){
+            if (errors.hasOwnProperty(k)){
+                unvalidate(k, errors[k]);
+            }
+        }
     });
 }
 
@@ -81,7 +95,7 @@ function newAnswer(answerId){
           <a class="btn ui-sortable-handle draggable"><i class="material-icons">reorder</i></a>
       </div>
       <div class="input-field col s7">
-          <input id="answer-`+answerId+`" type="text" class="validate answer_sentence" name="answer[sentence][]" required >
+          <input id="answer-`+answerId+`" type="text" class="validate answers_sentence" name="answer[sentence][]" required >
           <label for="answer-`+answerId+`">{{ trans('global.answers.name') }}</label>
       </div>
       <div class="input-field col s3">
@@ -93,10 +107,6 @@ function newAnswer(answerId){
       </div>
   </div>`;
   return el;
-}
-
-function validate(){
-
 }
 </script>
 @endsection

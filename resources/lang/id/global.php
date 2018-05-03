@@ -47,14 +47,10 @@ return [
     'questions' => [
         'title' => 'Pertanyaan',
         'created_at' => 'Time',
-        'fields' => [
-            'label' => 'Label',
-            'sentence' => 'Kalimat',
-        ],
         'saved' => 'Question saved',
         'deleted' => 'Question deleted',
-        'label' => 'Label Unik',
-        'sentence' => 'Kalimat',
+        'label' => 'Label',
+        'sentence' => 'Kalimat tanya',
         'multichoice' => 'Multi opsi',
     ],
     'answers' => [
@@ -96,7 +92,7 @@ return [
     'app_are_you_sure' => 'Apakah anda yakin?',
     'app_back_to_list' => 'Back to list',
     'app_dashboard' => 'Dashboard',
-    'app_delete' => 'Delete',
+    'app_delete' => 'Hapus',
 
     'global_title' => 'AppX',
     'about' => 'Tentang Kami',

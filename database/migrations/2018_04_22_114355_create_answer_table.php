@@ -17,6 +17,7 @@ class CreateAnswerTable extends Migration
             $table->increments('id');
             $table->string('sentence');
             $table->integer('score');
+            $table->integer('order');
             $table->integer('question_id')->unsigned();
             $table->foreign('question_id')->references('id')->on('question')->onDelete('cascade');
             $table->index('question_id', 'index_question_id');

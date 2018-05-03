@@ -11,24 +11,20 @@
                 <!--input type="checkbox" id="select-all" /-->
                 No.
             </th>
-            <th>@lang('global.questions.fields.label')</th>
-            <th>@lang('global.questions.fields.sentence')</th>
-            <th>&nbsp;</th>
+            <th>@lang('global.questions.label')</th>
+            <th>@lang('global.questions.sentence')</th>
+            <th>@lang('global.app_action')</th>
         </tr>
     </thead>
     <tbody>
-        <?php $i = ($questions->currentPage() - 1) * $questions->perPage() ?>
+        <?php $i = ($questions->currentPage() - 1) * $questions->perPage() + 1 ?>
         @if (count($questions) > 0)
             @foreach ($questions as $question)
                 <!--tr data-entry-id="{{ $question->id }}"-->
                 <tr>
-                    <td>{{ $i }}.</td>
-                    <td>{{ $question->name }}</td>
-                    <td>
-                        @foreach ($question->abilities()->pluck('name') as $ability)
-                            <span class="label label-info label-many">{{ $ability }}</span>
-                        @endforeach
-                    </td>
+                    <td class="center-align">{{ $i }}.</td>
+                    <td>{{ $question->label }}</td>
+                    <td>{{ $question->sentence }}</td>
                     <td>
                         <a href="{{ route('admin.questions.edit',[$question->id]) }}" class="btn btn-xs btn-info">@lang('global.app_edit')</a>
                         {!! Form::open(array(
@@ -40,6 +36,7 @@
                         {!! Form::close() !!}
                     </td>
                 </tr>
+                <?php $i++; ?>
             @endforeach
         @else
             <tr>

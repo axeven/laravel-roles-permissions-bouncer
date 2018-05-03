@@ -28,3 +28,26 @@ function createOverlay(){
   $('#custom-overlay').hide();
   return $('#custom-overlay');
 }
+
+function unvalidate(inputName, message){
+  var temp = inputName.replace(/\./g, '_');
+  name = temp.replace(/_[0-9]+/, "");
+  var el;
+  if( name === temp){
+    el = $('#'+name);
+  }else{
+    var idx =0 ;
+    var nameSplit = inputName.split('.');
+    for(var i = 0;i < nameSplit.length;++i){
+      if ( $.isNumeric( nameSplit[i])){
+        idx = parseInt(nameSplit[i]);
+        break;
+      }
+    }
+    el = $('.'+name)[idx]
+  }
+
+  $(el).addClass('invalid');
+  $(el).parent().children('span').remove();
+  $(el).parent().append('<span class="helper-text" data-error="'+message+'"></span>');
+}
