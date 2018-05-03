@@ -87,6 +87,13 @@ function saveQuestion(){
     });
 }
 
+function deleteAnswer(answerId){
+    if(confirm('{{ trans('global.app_are_you_sure') }}')){
+        var row = $('#answer-'+answerId).parents('.answer-row');
+        $(row).remove();
+    }
+}
+
 function newAnswer(answerId){
   var nextScore = $('.answer-row').length  + 1;
   var el = `
@@ -103,7 +110,7 @@ function newAnswer(answerId){
           <label for="score-`+answerId+`" class="active">{{ trans('global.answers.score') }}</label>
       </div>
       <div class="input-field col s1">
-          <a class="btn red"><i class="material-icons">delete</i></a>
+          <a class="btn red" onclick="return deleteAnswer(`+answerId+`)" ><i class="material-icons">delete</i></a>
       </div>
   </div>`;
   return el;
