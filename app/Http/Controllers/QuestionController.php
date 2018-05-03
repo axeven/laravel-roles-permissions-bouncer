@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Answer;
 use App\Question;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -25,12 +26,13 @@ class QuestionController extends Controller
         return view('admin.question.create');
     }
 
+    public function edit(Question $question)
+    {
+        $answers = $question->answers()->orderBy('order', 'asc')->get();
+        return view('admin.question.edit', compact('question', 'answers'));
+    }
+
     public function store(Request $request){
-        $messages = [
-            'required' => Lang::get('messages.required'),
-            'min' => Lang::get('messages.min'),
-            'numeric' => Lang::get('messages.numeric'),
-        ];
         $validator = $this->validate($request, [
             'question.label' => 'required|min:3|unique:question,label',
             'question.sentence' => 'required|min:10',
@@ -45,7 +47,7 @@ class QuestionController extends Controller
         $question = Question::create([
             'label' => $request->input('question.label'),
             'sentence' => $request->input('question.sentence'),
-            'choosability' => $request->has('question.multichoice') ? 'multiple' : 'single',
+            'choosability' => $request->input('question.multichoice') == "true"? 'multiple' : 'single',
         ]);
         $answers = $request->input('answers');
         foreach ($answers as $i => $val){
@@ -56,12 +58,39 @@ class QuestionController extends Controller
             DB::commit();
             $request->session()->flash('success_msg', Lang::get('global.question.saved'));
             $request->session()->reflash();
-            return response()->json([
-                'redirect' => url('admin/questions')
-                ]);
+            return response()->json(['redirect' => url('admin/questions')]);
         } else {
             DB::rollback();
             return response()->json(['error'=> Lang::get('global.question.save_failed')]);
         }
+    }
+
+    public function update(Request $request, Question $question)
+    {
+        $validator = $this->validate($request, [
+            'question.label' => 'required|min:3|unique:question,label,'.$question->id.',id',
+            'question.sentence' => 'required|min:10',
+            'answers.*.sentence' => 'required',
+            'answers.*.score' => 'required|numeric',
+        ]);
+        $question->label = $request->input('question.label');
+        $question->sentence = $request->input('question.sentence');
+        $question->choosability = $request->input('question.multichoice') == "true"? 'multiple' : 'single';
+        $question->save();
+        $answers = $request->input('answers');
+        foreach ($answers as $i => $val){
+            if (array_key_exists('id', $val)){
+                $ans = Answer::find($val['id']);
+                $ans->sentence = $val['sentence'];
+                $ans->score = $val['score'];
+                $ans->order = $i;
+                $ans->save();
+            }else{
+                $answers[$i]['order'] = $i;
+                $question->answers()->create($answers[$i]);
+            }
+
+        }
+        return response()->json(['redirect'=> url('admin/questions')]);
     }
 }

@@ -27,4 +27,5 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'admin', 'as' => 'admin.'], 
     Route::resource('tasks', 'TaskController');
     Route::post('tasks_mass_destroy', ['uses' => 'TasksController@massDestroy', 'as' => 'tasks.mass_destroy']);
     Route::resource('questions', 'QuestionController');
+    Route::resource('answers', 'AnswerController');
 });
