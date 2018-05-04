@@ -20,7 +20,6 @@
         <?php $i = ($questions->currentPage() - 1) * $questions->perPage() + 1 ?>
         @if (count($questions) > 0)
             @foreach ($questions as $question)
-                <!--tr data-entry-id="{{ $question->id }}"-->
                 <tr>
                     <td class="center-align">{{ $i }}.</td>
                     <td>{{ $question->label }}</td>
@@ -45,5 +44,5 @@
         @endif
     </tbody>
 </table>
-&nbsp;
+
 @stop

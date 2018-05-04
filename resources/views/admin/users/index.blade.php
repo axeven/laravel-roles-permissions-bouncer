@@ -3,14 +3,9 @@
 
 @section('content')
     <h3 class="page-title">@lang('global.users.title')</h3>
-    <p>
-        <a href="{{ route('admin.users.create') }}" class="btn btn-success">@lang('global.app_add_new')</a>
-    </p>
+    <a href="{{ route('admin.users.create') }}" class="btn-floating btn-large waves-effect waves-light red right"><i class="material-icons">add</i></a>
 
     <div class="panel panel-default">
-        <div class="panel-heading">
-            @lang('global.app_list')
-        </div>
 
         <div class="panel-body table-responsive">
             <table class="table table-bordered table-striped {{ count($users) > 0 ? 'datatable' : '' }} dt-select">
@@ -21,7 +16,7 @@
                         <th>@lang('global.users.fields.name')</th>
                         <th>@lang('global.users.fields.email')</th>
                         <th>@lang('global.users.fields.roles')</th>
-                        <th>&nbsp;</th>
+                        <th>@lang('global.app_action')</th>
 
                     </tr>
                 </thead>

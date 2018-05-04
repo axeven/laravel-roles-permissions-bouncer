@@ -4,6 +4,7 @@ $(document).ready(function(){
     $('#login-modal').modal('open');
     $('#email').focus();
   });
+  $('select').formSelect();
 });
 
 function createOverlay(){

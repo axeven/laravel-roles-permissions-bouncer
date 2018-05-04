@@ -1,68 +1,50 @@
 @extends('layouts.app')
 
 @section('content')
-    <h3 class="page-title">@lang('global.users.title')</h3>
-    {!! Form::open(['method' => 'POST', 'route' => ['admin.users.store']]) !!}
-
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            @lang('global.app_create')
-        </div>
-        
-        <div class="panel-body">
-            <div class="row">
-                <div class="col-xs-12 form-group">
-                    {!! Form::label('name', 'Name*', ['class' => 'control-label']) !!}
-                    {!! Form::text('name', old('name'), ['class' => 'form-control', 'placeholder' => '', 'required' => '']) !!}
-                    <p class="help-block"></p>
-                    @if($errors->has('name'))
-                        <p class="help-block">
-                            {{ $errors->first('name') }}
-                        </p>
-                    @endif
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-xs-12 form-group">
-                    {!! Form::label('email', 'Email*', ['class' => 'control-label']) !!}
-                    {!! Form::email('email', old('email'), ['class' => 'form-control', 'placeholder' => '', 'required' => '']) !!}
-                    <p class="help-block"></p>
-                    @if($errors->has('email'))
-                        <p class="help-block">
-                            {{ $errors->first('email') }}
-                        </p>
-                    @endif
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-xs-12 form-group">
-                    {!! Form::label('password', 'Password*', ['class' => 'control-label']) !!}
-                    {!! Form::password('password', ['class' => 'form-control', 'placeholder' => '', 'required' => '']) !!}
-                    <p class="help-block"></p>
-                    @if($errors->has('password'))
-                        <p class="help-block">
-                            {{ $errors->first('password') }}
-                        </p>
-                    @endif
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-xs-12 form-group">
-                    {!! Form::label('roles', 'Roles*', ['class' => 'control-label']) !!}
-                    {!! Form::select('roles[]', $roles, old('roles'), ['class' => 'form-control select2', 'multiple' => 'multiple', 'required' => '']) !!}
-                    <p class="help-block"></p>
-                    @if($errors->has('roles'))
-                        <p class="help-block">
-                            {{ $errors->first('roles') }}
-                        </p>
-                    @endif
-                </div>
-            </div>
-            
-        </div>
+<h3 class="page-title">@lang('global.users.title')</h3>
+{!! Form::open(['method' => 'POST', 'route' => ['admin.users.store']]) !!}
+<div class="row">
+    <div class="col s12 input-field">
+        {!! Form::text('name', old('name'), ['class' => 'validate', 'required' => '']) !!}
+        {!! Form::label('name', trans('global.users.fields.name'), []) !!}
+        @if($errors->has('name'))
+            <span class="help-text" data-error="{{ $errors->first('name') }}"></span>
+        @endif
     </div>
-
-    {!! Form::submit(trans('global.app_save'), ['class' => 'btn btn-danger']) !!}
-    {!! Form::close() !!}
+</div>
+<div class="row">
+    <div class="col s12 input-field">
+        {!! Form::email('email', old('email'), ['class' => 'validate', 'required' => '']) !!}
+        {!! Form::label('email', trans('global.users.fields.email'), []) !!}
+        @if($errors->has('email'))
+            <span class="help-text" data-error="{{ $errors->first('email') }}"></span>
+        @endif
+    </div>
+</div>
+<div class="row">
+    <div class="col s12 input-field">
+        {!! Form::password('password', ['class' => 'validate', 'required' => '']) !!}
+        {!! Form::label('password', trans('global.users.fields.password'), []) !!}
+        @if($errors->has('password'))
+            <span class="help-text" data-error="{{ $errors->first('password') }}"></span>  
+        @endif
+    </div>
+</div>
+<div class="row">
+    <div class="col s12 input-field">
+        {!! Form::select('roles[]', $roles, old('roles'), ['class' => '', 'multiple' => 'multiple', 'required' => '']) !!}
+        {!! Form::label('roles', trans('global.users.fields.roles'), []) !!}
+        <p class="help-block"></p>
+        @if($errors->has('roles'))
+            <span class="help-text" data-error="{{ $errors->first('roles') }}"></span>  
+        @endif
+    </div>
+</div>
+<div class="row">
+    <div class="col s12">
+        {!! Form::submit(trans('global.app_save'), ['class' => 'btn btn-danger']) !!}
+    </div>
+</div>
+{!! Form::close() !!}
 @stop
 

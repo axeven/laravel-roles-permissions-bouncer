@@ -10,7 +10,7 @@
     <nav>
         <div class="nav-wrapper">
             <div class="container">
-                <a href="#" class="brand-logo">{{ trans('global.sitename') }}</a>
+                <a href="{{ url("/") }}" class="brand-logo">{{ trans('global.sitename') }}</a>
                 <ul id="nav-mobile" class="right">
                     <li><a href="#">{{ trans('global.about') }}</a></li>
                     <li><a href="#">{{ trans('global.company_list') }}</a></li>
@@ -18,6 +18,9 @@
                     <li><a href="#">{{ trans('global.mentors') }}</a></li>
                     @can('questions_manage')
                         <li><a href="{{ route('admin.questions.index') }}">{{ trans('global.questions_manage.title') }}</a></li>
+                    @endcan
+                    @can('users_manage')
+                        <li><a href="{{ route('admin.users.index') }}">{{ trans('global.users_manage.title') }}</a></li>
                     @endcan
                     @if(Auth::guest())
                         <li><a id="login" href="#">{{ trans('global.login') }}</a></li>

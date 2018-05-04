@@ -12,8 +12,8 @@ return [
         ],
     ],
 
-    'user-management' => [
-        'title' => 'User Management',
+    'users_manage' => [
+        'title' => 'Atur Pengguna',
         'created_at' => 'Time',
         'fields' => [
         ],
@@ -68,14 +68,14 @@ return [
     ],
 
     'users' => [
-        'title' => 'Users',
+        'title' => 'Pengguna',
         'created_at' => 'Time',
         'fields' => [
-            'name' => 'Name',
+            'name' => 'Nama',
             'email' => 'Email',
-            'password' => 'Password',
-            'roles' => 'Roles',
-            'remember-token' => 'Remember token',
+            'password' => 'Kata kunci',
+            'roles' => 'Tipe',
+            'remember-token' => 'Token',
         ],
     ],
     'app_create' => 'Tambah',
