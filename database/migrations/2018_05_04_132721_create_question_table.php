@@ -18,7 +18,11 @@ class CreateQuestionTable extends Migration
             $table->string('label');
             $table->unique('label', 'unique_question_label');
             $table->string('sentence');
-            $table->enum('choosability', ['single', 'multiple']);
+            $table->integer('order');
+            $table->enum('type', ['text', 'textarea', 'select-single', 'select-multiple']);
+            $table->integer('section_id')->unsigned();
+            $table->foreign('section_id')->references('id')->on('section')->onDelete('cascade');
+            $table->index('section_id', 'index_section_id');
             $table->timestamps();
         });
     }
@@ -32,6 +36,8 @@ class CreateQuestionTable extends Migration
     {
         Schema::table('question', function(Blueprint $table){
             $table->dropIndex('unique_question_label');
+            $table->dropForeign('question_section_id_foreign');
+            $table->dropIndex('index_section_id');
         });
         Schema::dropIfExists('question');
     }

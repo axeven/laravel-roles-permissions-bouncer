@@ -50,8 +50,15 @@ return [
         'saved' => 'Question saved',
         'deleted' => 'Question deleted',
         'label' => 'Label',
+        'section' => 'Bagian',
         'sentence' => 'Kalimat tanya',
-        'multichoice' => 'Multi opsi',
+        'type' => 'Tipe',
+        'types' => [
+            'text' => 'Teks',
+            'textarea' => 'Teks panjang',
+            'single' => 'Pilih salah satu',
+            'multiple' => 'Pilih beberapa',
+        ]
     ],
     'answers' => [
         'name' => 'Jawaban',
@@ -66,7 +73,9 @@ return [
             'abilities' => 'Abilities',
         ],
     ],
-
+    'section' => [
+        'title' => 'Bagian'
+    ],
     'users' => [
         'title' => 'Pengguna',
         'created_at' => 'Time',

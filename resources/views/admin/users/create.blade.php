@@ -33,7 +33,7 @@
 <div class="row">
     <div class="col s12 input-field">
         {!! Form::select('roles[]', $roles, old('roles'), ['class' => '', 'multiple' => 'multiple', 'required' => '']) !!}
-        {!! Form::label('roles', trans('global.users.fields.roles'), []) !!}
+        {!! Form::label('roles', trans('global.users.fields.roles')) !!}
         <p class="help-block"></p>
         @if($errors->has('roles'))
             <span class="help-text" data-error="{{ $errors->first('roles') }}"></span>  

@@ -4,26 +4,41 @@ namespace App\Http\Controllers;
 
 use App\Answer;
 use App\Question;
+use App\Section;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Lang;
 class QuestionController extends Controller
 {
-    public function index(Request $request)
+
+    private $types = [];
+
+    public function __construct()
     {
-        $sort = $request->input('sort');
-        $order = $request->input('order');
-        if (!$sort) {
-            $sort = 'label';
-            $order = 'asc';
-        }
-        $questions = Question::orderBy($sort, $order)->paginate(20);
-        $links = $questions->appends(['sort' => $sort, 'order' => $order])->links();
-        return view('admin.question.index', compact('questions', 'sort', 'order', 'links'));
+        $this->types = [
+            'text' => Lang::get('global.questions.types.text'),
+            'textarea' => Lang::get('global.questions.types.textarea'),
+            'select-single' => Lang::get('global.questions.types.single'),
+            'select-multiple' => Lang::get('global.questions.types.multiple')
+        ];
     }
 
-    public function create(){
-        return view('admin.question.create');
+    public function index(Request $request)
+    {
+        $sectionId = 1;
+        if($request->has('section_id')){
+            $sectionId = $request->input('section_id');
+        }
+        $sections = Section::orderBy('order', 'asc')->pluck('name', 'id');
+        $questions = Question::where('section_id', $sectionId )->orderBy('order', 'asc')->get();
+        return view('admin.question.index', compact('questions', 'sections', 'sectionId'));
+    }
+
+    public function create()
+    {
+        $sections = Section::orderBy('order', 'asc')->pluck('name', 'id');
+        $types = $this->types;
+        return view('admin.question.create', compact('sections', 'types'));
     }
 
     public function edit(Question $question)
@@ -32,33 +47,43 @@ class QuestionController extends Controller
         return view('admin.question.edit', compact('question', 'answers'));
     }
 
-    public function store(Request $request){
-        $validator = $this->validate($request, [
+    public function store(Request $request)
+    {
+        $rules = [
             'question.label' => 'required|min:3|unique:question,label',
             'question.sentence' => 'required|min:10',
-            'answers.*.sentence' => 'required',
-            'answers.*.score' => 'required|numeric',
-        ]);
+        ];
+        if (strpos($request->input('question.type'), 'select') >= 0){
+            $rules['answers.*.sentence'] = 'required';
+            $rules['answers.*.score'] = 'required|numeric';
+        }
+        $validator = $this->validate($request, $rules);
         if($validator && $validator->fails()){
             return response()->json(['errors'=>$validator->errors()->all()]);
         }
 
         DB::beginTransaction();
-        $question = Question::create([
-            'label' => $request->input('question.label'),
-            'sentence' => $request->input('question.sentence'),
-            'choosability' => $request->input('question.multichoice') == "true"? 'multiple' : 'single',
-        ]);
+        $question = new Question();
+        $question->label = $request->input('question.label');
+        $question->sentence = $request->input('question.sentence');
+        $question->type = $request->input('question.type');
+        $question->order = -1;
+        $question->section()->associate(
+            Section::find($request->input('question.section_id'))
+        );
+        $success = $question->save();
         $answers = $request->input('answers');
-        foreach ($answers as $i => $val){
-            $answers[$i]['order'] = $i;
+        if ($answers){
+            foreach ($answers as $i => $val){
+                $answers[$i]['order'] = $i;
+            }
+            $success = $question->answers()->createMany($answers);
         }
-        $success = $question->answers()->createMany($answers);
         if($success){
             DB::commit();
             $request->session()->flash('success_msg', Lang::get('global.question.saved'));
             $request->session()->reflash();
-            return response()->json(['redirect' => url('admin/questions')]);
+            return response()->json(['redirect' => route('admin.questions.index')]);
         } else {
             DB::rollback();
             return response()->json(['error'=> Lang::get('global.question.save_failed')]);

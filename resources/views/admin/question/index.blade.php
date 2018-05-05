@@ -4,6 +4,10 @@
 @section('content')
 <h3 class="page-title">@lang('global.questions.title')</h3>
 <a href="{{ route('admin.questions.create') }}" class="btn-floating btn-large waves-effect waves-light red right"><i class="material-icons">add</i></a>
+<div class="input-field left">
+    {!! Form::select('section', $sections, $sectionId, ['id' => 'select_section']) !!}
+    {!! Form::label('section', trans('global.section.title')) !!}
+</div>
 <table class="highlight">
     <thead>
         <tr>
@@ -17,7 +21,7 @@
         </tr>
     </thead>
     <tbody>
-        <?php $i = ($questions->currentPage() - 1) * $questions->perPage() + 1 ?>
+        <?php $i = 1 ?>
         @if (count($questions) > 0)
             @foreach ($questions as $question)
                 <tr>
@@ -45,4 +49,14 @@
     </tbody>
 </table>
 
+<script type="text/javascript">
+$(document).ready(function(){
+    var currId = $('#select_section').val();
+    $('#select_section').change(function(){
+        if (currId !== $('#select_section').val()){
+            window.location = "{{ route('admin.questions.index') }}?section_id=" + $('#select_section').val();
+        }
+    });
+});
+</script>
 @stop
