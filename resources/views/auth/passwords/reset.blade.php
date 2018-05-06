@@ -1,75 +1,47 @@
-@extends('layouts.auth')
+@extends('layouts.app')
 
 @section('content')
-    <div class="row">
-        <div class="col-md-8 col-md-offset-2">
-            <div class="panel panel-default">
-                <div class="panel-heading">Reset password</div>
-                <div class="panel-body">
-                    @if (count($errors) > 0)
-                        <div class="alert alert-danger">
-                            <strong>Whoops!</strong> There were problems with input:
-                            <br><br>
-                            <ul>
-                                @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
+<div class="row">
+    <div class="col s3"></div>
+    <div class="col s6">
+        <h4>{{ trans('global.reset_password') }}</h4>
+        <form class="form-horizontal" role="form" method="POST" action="{{ url('password/reset') }}">
+            <input type="hidden" name="_token" value="{{ csrf_token() }}" />
+            <input type="hidden" name="token" value="{{ $token }}" />
+            <div class="row">
+                <div class="col s12 input-field">
+                    <input type="email" class="validate {{ sizeof($errors->get('email')) > 0 ? 'invalid' : '' }}" name="email" value="{{ old('email') }}"/>
+                    <label for="email">{{ trans('global.email') }}</label>
+                    @if(sizeof($errors->get('email')) > 0)
+                        <span class="helper-text" data-error="{{ $errors->get('email')[0] }}"></span>
                     @endif
-
-                    <form class="form-horizontal"
-                          role="form"
-                          method="POST"
-                          action="{{ url('password/reset') }}">
-                        <input type="hidden"
-                               name="_token"
-                               value="{{ csrf_token() }}">
-                        <input type="hidden" name="token" value="{{ $token }}">
-
-                        <div class="form-group">
-                            <label class="col-md-4 control-label">Email</label>
-
-                            <div class="col-md-6">
-                                <input type="email"
-                                       class="form-control"
-                                       name="email"
-                                       value="{{ old('email') }}">
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="col-md-4 control-label">Password</label>
-
-                            <div class="col-md-6">
-                                <input type="password"
-                                       class="form-control"
-                                       name="password">
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="col-md-4 control-label">Confirm password</label>
-
-                            <div class="col-md-6">
-                                <input type="password"
-                                       class="form-control"
-                                       name="password_confirmation">
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="col-md-6 col-md-offset-4">
-                                <button type="submit"
-                                        class="btn btn-primary"
-                                        style="margin-right: 15px;">
-                                    Reset password
-                                </button>
-                            </div>
-                        </div>
-                    </form>
                 </div>
             </div>
-        </div>
+            <div class="row">
+                <div class="input-field col s12">
+                    <input id="password" type="password" class="validate {{ sizeof($errors->get('password')) > 0 ? 'invalid' : '' }}" name="password">
+                    <label for="password">{{ trans('global.password') }}</label>
+                    @if(sizeof($errors->get('password')) > 0)
+                        <span class="helper-text" data-error="{{ $errors->get('password')[0] }}"></span>
+                    @endif
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s12">
+                    <input id="password_confirmation" type="password" class="validate {{ sizeof($errors->get('password_confirmation')) > 0 ? 'invalid' : '' }}" name="password_confirmation">
+                    <label for="password_confirmation">{{ trans('global.password_confirmation') }}</label>
+                    @if(sizeof($errors->get('password_confirmation')) > 0)
+                        <span class="helper-text" data-error="{{ $errors->get('password_confirmation')[0] }}"></span>
+                    @endif
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12">
+                    <button type="submit" class="btn">{{ trans('global.app_submit') }}</button>
+                </div>
+            </div>
+        </form>
     </div>
+    <div class="col s3"></div>
+</div>
 @endsection

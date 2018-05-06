@@ -116,6 +116,9 @@ return [
         'question.label' => 'Label',
         'answers.*.score' => 'Skor',
         'answers.*.sentence' => 'Jawaban',
+        'new_password' => 'Password baru',
+        'new_password_confirmation' => 'Konfirmasi password baru',
+        'current_password' => 'Password sekarang',
     ],
 
 ];

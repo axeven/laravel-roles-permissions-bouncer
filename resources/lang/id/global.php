@@ -82,7 +82,7 @@ return [
         'fields' => [
             'name' => 'Nama',
             'email' => 'Email',
-            'password' => 'Kata kunci',
+            'password' => 'Password',
             'roles' => 'Tipe',
             'remember-token' => 'Token',
         ],
@@ -102,6 +102,7 @@ return [
     'app_back_to_list' => 'Back to list',
     'app_dashboard' => 'Dashboard',
     'app_delete' => 'Hapus',
+    'app_submit' => 'Kirim',
 
     'global_title' => 'AppX',
     'about' => 'Tentang Kami',
@@ -114,7 +115,12 @@ return [
     'sitename' => 'Sitename',
     'contact_us' => 'Hubungi Kami',
     'forgot_password' => 'Lupa Password',
+    'change_password' => 'Ganti Password',
+    'current_password' => 'Password sekarang',
+    'new_password' => 'Password baru',
+    'new_password_confirmation' => 'Konfirmasi password baru',
     'remember_me' => 'Ingat Saya',
-    'password' => 'Kata kunci',
+    'password' => 'Password',
     'email' => 'Email',
+    'reset_password' => 'Ganti ulang password',
 ];
