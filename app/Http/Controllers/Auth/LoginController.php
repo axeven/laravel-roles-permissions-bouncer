@@ -7,6 +7,8 @@ use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Socialite;
 use Auth;
 use App\User;
+use Lang;
+use Illuminate\Http\Request;
 
 class LoginController extends Controller
 {
@@ -41,4 +43,12 @@ class LoginController extends Controller
     }
 
     
+    protected function sendFailedLoginResponse(Request $request)
+    {   
+        return redirect()->to('/login')
+            ->withInput($request->only($this->username(), 'remember'))
+            ->withErrors([
+                $this->username() => Lang::get('auth.failed'),
+            ]);
+    }
 }
