@@ -16,12 +16,16 @@
         </div>
     </div>
     <div class="row">
-        <p class="col s12">
-            <label>
-                <input id="question_multichoice" type="checkbox"  name="multichoice"  {{ $question->choosability == 'multiple' ? 'checked': '' }} />
-                <span>{{ trans('global.questions.multichoice') }}</span>
-            </label>
-        </p>
+        <div class="input-field col s12">
+            {!! Form::select('question_section', $sections, $question->section->id, ['class' => 'validate', 'required' => 'required', 'id' => 'question_section']) !!}
+            <label for="question_section">{{ trans('global.questions.section') }}</label>
+        </div>
+    </div>
+    <div class="row">
+        <div class="input-field col s12">
+            {!! Form::select('question_type', $types, $question->type, ['class' => 'validate', 'required' => 'required', 'id'=>'question_type']) !!}
+            <label for="question_type">{{ trans('global.questions.type') }}</label>
+        </div>
     </div>
     <div class="row">
         <div class="input-field col s12" id="answers">
@@ -68,7 +72,22 @@ $(document).ready(function(){
     $('#add-question').click(function(){
         saveQuestion();
     });
+    $('#question_type').change(function(){
+        changeType();
+    });
+    changeType();
 });
+
+function changeType(){
+    var type = $('#question_type').val()
+    if (type == 'text' || type == 'textarea'){
+        $('.answer-row').addClass('answer-row-hidden').removeClass('answer-row').hide();
+        $('#add-answer').hide();
+    } else {
+        $('.answer-row-hidden').addClass('answer-row').removeClass('answer-row-hidden').show();
+        $('#add-answer').show();
+    }
+}
 
 function deleteAnswer(answerId){
     if(confirm('{{ trans('global.app_are_you_sure') }}')){
@@ -99,7 +118,8 @@ function saveQuestion(){
             id: {{ $question->id }},
             label: $('#question_label').val(),
             sentence: $('#question_sentence').val(),
-            multichoice: $('#question_multichoice').is(':checked'),
+            section_id: $('#question_section').val(),
+            type: $('#question_type').val(),
         },
         answers: [],
     };

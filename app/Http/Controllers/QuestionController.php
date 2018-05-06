@@ -43,8 +43,10 @@ class QuestionController extends Controller
 
     public function edit(Question $question)
     {
+        $sections = Section::orderBy('order', 'asc')->pluck('name', 'id');
+        $types = $this->types;
         $answers = $question->answers()->orderBy('order', 'asc')->get();
-        return view('admin.question.edit', compact('question', 'answers'));
+        return view('admin.question.edit', compact('question', 'answers', 'types', 'sections'));
     }
 
     public function store(Request $request)
@@ -53,7 +55,7 @@ class QuestionController extends Controller
             'question.label' => 'required|min:3|unique:question,label',
             'question.sentence' => 'required|min:10',
         ];
-        if (strpos($request->input('question.type'), 'select') >= 0){
+        if (strpos($request->input('question.type'), 'select')!==false){
             $rules['answers.*.sentence'] = 'required';
             $rules['answers.*.score'] = 'required|numeric';
         }
@@ -83,7 +85,7 @@ class QuestionController extends Controller
             DB::commit();
             $request->session()->flash('success_msg', Lang::get('global.question.saved'));
             $request->session()->reflash();
-            return response()->json(['redirect' => route('admin.questions.index')]);
+            return response()->json(['redirect' => route('admin.questions.index', ['section_id' => $request->input('question.section_id')])]);
         } else {
             DB::rollback();
             return response()->json(['error'=> Lang::get('global.question.save_failed')]);
@@ -92,30 +94,41 @@ class QuestionController extends Controller
 
     public function update(Request $request, Question $question)
     {
-        $validator = $this->validate($request, [
+        $rules = [
             'question.label' => 'required|min:3|unique:question,label,'.$question->id.',id',
             'question.sentence' => 'required|min:10',
-            'answers.*.sentence' => 'required',
-            'answers.*.score' => 'required|numeric',
-        ]);
+        ];
+        if (strpos($request->input('question.type'), 'select') >= 0){
+            $rules['answers.*.sentence'] = 'required';
+            $rules['answers.*.score'] = 'required|numeric';
+        }
+        $validator = $this->validate($request, $rules);
         $question->label = $request->input('question.label');
         $question->sentence = $request->input('question.sentence');
-        $question->choosability = $request->input('question.multichoice') == "true"? 'multiple' : 'single';
-        $question->save();
-        $answers = $request->input('answers');
-        foreach ($answers as $i => $val){
-            if (array_key_exists('id', $val)){
-                $ans = Answer::find($val['id']);
-                $ans->sentence = $val['sentence'];
-                $ans->score = $val['score'];
-                $ans->order = $i;
-                $ans->save();
-            }else{
-                $answers[$i]['order'] = $i;
-                $question->answers()->create($answers[$i]);
+        $question->type = $request->input('question.type');
+        $question->section()->associate(
+            Section::find($request->input('question.section_id'))
+        );
+        $success = $question->save();
+        if (strpos($question->type, 'select')!==false){
+            $answers = $request->input('answers');
+            if ($answers){
+                foreach ($answers as $i => $val){
+                    if (array_key_exists('id', $val)){
+                        $ans = Answer::find($val['id']);
+                        $ans->sentence = $val['sentence'];
+                        $ans->score = $val['score'];
+                        $ans->order = $i;
+                        $ans->save();
+                    }else{
+                        $answers[$i]['order'] = $i;
+                        $question->answers()->create($answers[$i]);
+                    }
+                }
             }
-
+        }else{
+            $question->answers()->delete();
         }
-        return response()->json(['redirect'=> url('admin/questions')]);
+        return response()->json(['redirect'=> route('admin.questions.index', ['section_id' => $request->input('question.section_id')])]);
     }
 }
