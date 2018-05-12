@@ -16,10 +16,12 @@ $this->get('password/reset', 'Auth\ForgotPasswordController@showLinkRequestForm'
 $this->post('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail')->name('auth.password.reset');
 $this->get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm')->name('password.reset');
 $this->post('password/reset', 'Auth\ResetPasswordController@reset')->name('auth.password.reset');
-
+//register
 $this->get('register', 'Auth\RegisterController@showRegistrationForm')->name('register');
 $this->post('register/new', 'Auth\RegisterController@register')->name('register.new');
+// survey
 $this->get('company_profile', 'SurveyController@add')->name('survey.add');
+$this->post('company_profile', 'SurveyController@record')->name('survey.record');
 
 Route::group(['middleware' => ['auth'], 'prefix' => 'admin', 'as' => 'admin.'], function () {
     Route::resource('abilities', 'Admin\AbilitiesController');

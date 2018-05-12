@@ -16,7 +16,7 @@
             @endif
             <p>
                 <label>
-                    <input type="checkbox" class="filled-in" name="checkbox_{{ $question->id }}" {{ $checked }} />
+                    <input type="checkbox" class="filled-in" name="checkbox_{{ $question->id }}" {{ isset($survey) ? 'sid='.$survey->id : '' }}  value="{{ $answer->id }}" {{ $checked }} />
                     <span>{{ $answer->sentence }}</span>
                 </label>
             </p>

@@ -28,6 +28,35 @@ class SurveyController extends Controller
         $sections = Section::orderBy('order', 'asc')->get();
         $question = Question::where('section_id', $section->id)->orderBy('order', 'asc')->get();
         $hide_login_menu = true;
-        return view('survey.add', compact('sectionId', 'sections', 'question', 'hide_login_menu'));
+        $temp = $this->getNextPrevSectionId($sections, $sectionId);
+        $nextSectionId = $temp['next'];
+        $prevSectionId = $temp['prev'];
+        return view('survey.add', compact(
+            'sectionId', 'sections', 'question', 'hide_login_menu', 'nextSectionId', 'prevSectionId'
+        ));
+    }
+
+    public function record(Request $request){
+        if (! Gate::allows('survey_add')) {
+            return response()->json(['redirect' => route('home')]);
+        }
+
+    }
+
+    private function getNextPrevSectionId($orderedSections, $sectionId){
+        $prev = -1;
+        $next = -1;
+        $breakNext = false;
+        foreach($orderedSections as $s){
+            if ($breakNext){
+                $next = $s->id;
+                break;
+            }
+            if ($s->id == $sectionId){
+                $breakNext = true;
+            }
+            $prev = $s->id;
+        }
+        return ['prev' => $prev, 'next' => $next];
     }
 }

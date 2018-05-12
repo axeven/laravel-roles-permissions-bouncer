@@ -19,12 +19,11 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->string('remember_token')->nullable();
 
+            $table->timestamps();
+
             $table->unique('email', 'unique_email');
             $table->index(['email', 'password'], 'index_login');
             $table->index('created_at', 'index_user_sort_created');
-
-            $table->timestamps();
-
         });
     }
 

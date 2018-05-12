@@ -17,6 +17,9 @@
                         @if($q->type == "text") 
                             @include('survey.formtext', ['question' => $q])
                         @endif
+                        @if($q->type == "textarea") 
+                            @include('survey.formtextarea', ['question' => $q])
+                        @endif
                         @if($q->type == "select-single") 
                             @include('survey.formradio', ['question' => $q])
                         @endif
@@ -28,17 +31,80 @@
                     <div class="col l2 .show-on-large"></div>
                 </div>                
             </div>
+            <div class="card-action center-align">
+                <a id="prev" class="btn green lighten-2">{{ trans('global.prev') }}</a>
+                <a id="next" class="btn green lighten-2">{{ trans('global.next') }}</a>
+            </div>
         </div>
     </div>
 </div>
 
 <script type="text/javascript">
+$(document).ready(function(){
+    $('#next').click(function(){
+        saveAndGoto({{ $nextSectionId }});
+    });
+    $('#prev').click(function(){
+        saveAndGoto({{ $prevSectionId }});
+    });
+});
+
 function saveAndGoto(sectionId){
     let data = {
         _token: "{{ csrf_token() }}",
+        section_id: sectionId,
         surveys: [],
     };
-    
+    var input = $(".survey");
+    for(var i = 0; i < input.length; i++){
+        var survey = {
+            question_id : $(input[i]).attr('qid'),
+            answers : []
+        };
+        if($(input[i]).find('input[type=text]').length > 0){
+            answer  = {};
+            if ($(input[i]).attr('sid')){
+                answer.id = $(input[i]).attr('sid');
+            }
+            if($(input[i]).find('input[type=text]').val() != ""){
+                answer.valtext = $(input[i]).find('input[type=text]').val();
+                survey.answers.push(answer);
+            }
+        }
+        if($(input[i]).find('input[type=radio]').length > 0){
+            answer  = {};
+            if ($(input[i]).attr('sid')){
+                answer.id = $(input[i]).attr('sid');
+            }
+            if($(input[i]).find('input[type=radio]:checked').length > 0){
+                answer.val = $(input[i]).find('input[type=radio]:checked').val();
+                survey.answers.push(answer);
+            }
+        }
+        if($(input[i]).find('input[type=checkbox]').length > 0){
+            var checked = $(input[i]).find('input[type=checkbox]:checked');
+            for(var j = 0; j < checked.length; j++){
+                var answer = {};
+                if($(checked[j]).attr('sid')){
+                    answer.id = $(checked[j]).attr('sid');
+                }
+                answer.val = $(checked[j]).val();
+                survey.answers.push(answer)
+            }
+        }
+        if($(input[i]).find('textarea').length > 0){
+            answer = {};
+            if ($(input[i]).attr('sid')){
+                answer.id = $(input[i]).attr('sid');
+            }
+            if($(input[i]).find('textarea').val() != ""){
+                answer.valtext = $(input[i]).find('textarea').val();
+                survey.answers.push(answer);
+            }
+        }
+        data.surveys.push(survey);
+    }
+    console.log(data);
 }
 </script>
 
