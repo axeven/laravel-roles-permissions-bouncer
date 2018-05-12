@@ -6,14 +6,14 @@ return [
     ],
 
     'questions_manage' => [
-        'title' => 'Atur Pertanyaan',
+        'title' => 'Pertanyaan',
         'created_at' => 'Time',
         'fields' => [
         ],
     ],
 
     'users_manage' => [
-        'title' => 'Atur Pengguna',
+        'title' => 'Pengguna',
         'created_at' => 'Time',
         'fields' => [
         ],
@@ -87,6 +87,11 @@ return [
             'remember-token' => 'Token',
         ],
     ],
+
+    'survey_add' => [
+        'title' => 'Perusahaan'
+    ],
+
     'app_create' => 'Tambah',
     'app_action' => 'Aksi',
     'app_save' => 'Simpan',
@@ -119,8 +124,15 @@ return [
     'current_password' => 'Password sekarang',
     'new_password' => 'Password baru',
     'new_password_confirmation' => 'Konfirmasi password baru',
+    'password_confirmation' => 'Konfirmasi password',
     'remember_me' => 'Ingat Saya',
     'password' => 'Password',
     'email' => 'Email',
     'reset_password' => 'Ganti ulang password',
+    'have_company' => 'Saya memiliki perusahaan',
+    'no_company' => 'Saya ingin membangun perusahan',
+    'register' => 'Daftar',
+    'password_not_match' => 'Konfirmasi password tidak sesuai.',
+    'profile' => 'Profil',
+    'company_status' => 'Status perusahaan',
 ];

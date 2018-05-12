@@ -2,9 +2,11 @@ $(document).ready(function(){
   $('.modal').modal();  
   $('#login').click(function(){
     $('#login-modal').modal('open');
-    $('#email').focus();
+    $('#loginemail').focus();
   });
   $('select').formSelect();
+  $('.tabs').tabs();
+      
 });
 
 function createOverlay(){

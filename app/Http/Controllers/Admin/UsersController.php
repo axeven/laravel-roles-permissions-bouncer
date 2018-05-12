@@ -12,6 +12,12 @@ use App\Http\Requests\Admin\UpdateUsersRequest;
 
 class UsersController extends Controller
 {
+
+    public function __construct()
+    {
+        view()->share(['tab_selected' => 'users']);
+    }
+
     /**
      * Display a listing of User.
      *

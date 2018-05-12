@@ -11,6 +11,11 @@ use Silber\Bouncer\Database\Ability;
 
 class AbilitiesController extends Controller
 {
+
+    public function __construct(){
+        view()->share(['tab_selected' => '']);
+    }
+
     /**
      * Display a listing of Abilities.
      *

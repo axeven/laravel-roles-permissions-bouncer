@@ -16,12 +16,6 @@
                     <li><a href="#">{{ trans('global.company_list') }}</a></li>
                     <li><a href="#">{{ trans('global.events') }}</a></li>
                     <li><a href="#">{{ trans('global.mentors') }}</a></li>
-                    @can('questions_manage')
-                        <li><a href="{{ route('admin.questions.index') }}">{{ trans('global.questions_manage.title') }}</a></li>
-                    @endcan
-                    @can('users_manage')
-                        <li><a href="{{ route('admin.users.index') }}">{{ trans('global.users_manage.title') }}</a></li>
-                    @endcan
                     @if(Auth::guest())
                         <li><a id="login" href="#">{{ trans('global.login') }}</a></li>
                     @else
@@ -34,13 +28,36 @@
     @if( !empty( $show_banner ) )
         <div id="header-image" class="center-align">
             <div class="banner-btn" >
-                <a href="#" class="btn-large waves-effect waves-light">{{ trans('global.start_your_plan') }}</a>
+                <a href="{{ route('register') }}" class="btn-large waves-effect waves-light">{{ trans('global.start_your_plan') }}</a>
             </div>
         </div>
     @endif
 </header>
 <div class="container">
-    @yield('content')
+@if (!Auth::guest() && !isset($hide_login_menu))
+<div class="row no-margin-bottom">
+    <div class="col l12">
+        <div class="card">
+            <div class="card-content">
+                <ul class="tabs">
+                    <li class="tab"><a target="_self" href="{{ route('home') }}">{{ trans('global.profile') }}</a></li>
+                    @can('questions_manage')
+                        <li class="tab"><a target="_self" {{ $tab_selected == 'questions'?'class=active':'' }} href="{{ route('admin.questions.index') }}">{{ trans('global.questions_manage.title') }}</a></li>
+                    @endcan
+                    @can('users_manage')
+                        <li class="tab"><a target="_self" {{ $tab_selected == 'users'?'class=active':'' }} href="{{ route('admin.users.index') }}">{{ trans('global.users_manage.title') }}</a></li>
+                    @endcan
+                    @can('survey_add')
+                        <li class="tab"><a target="_self" {{ $tab_selected == 'survey'?'class=active':'' }} href="{{ route('survey.add') }}">{{ trans('global.survey_add.title') }}</a></li>
+                    @endcan
+                </ul>
+                @yield('login-content')
+            </div>
+        </div>
+    </div>
+</div>
+@endif
+@yield('content')
 </div>
 <footer class="page-footer">
     <div class="container">

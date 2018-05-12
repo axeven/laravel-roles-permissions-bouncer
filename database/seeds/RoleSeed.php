@@ -12,11 +12,8 @@ class RoleSeed extends Seeder
     public function run()
     {
         Bouncer::allow('administrator')->to('users_manage');
-        Bouncer::allow('administrator')->to('propinsi_manage');
-        Bouncer::allow('administrator')->to('company_income_manage');
-        Bouncer::allow('administrator')->to('company_size_manage');
-        Bouncer::allow('administrator')->to('company_model_manage');
-        Bouncer::allow('administrator')->to('company_field_manage');
         Bouncer::allow('administrator')->to('questions_manage');
+        Bouncer::allow('administrator')->to('survey_add');
+        Bouncer::allow('user')->to('survey_add');
     }
 }

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('content')
+@section('login-content')
 <h3 class="page-title">@lang('global.users.title')</h3>
 {!! Form::model($user, ['method' => 'PUT', 'route' => ['admin.users.update', $user->id]]) !!}
 <div class="row">

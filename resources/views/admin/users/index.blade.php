@@ -1,7 +1,7 @@
 @inject('request', 'Illuminate\Http\Request')
 @extends('layouts.app')
 
-@section('content')
+@section('login-content')
     <h3 class="page-title">@lang('global.users.title')</h3>
     <a href="{{ route('admin.users.create') }}" class="btn-floating btn-large waves-effect waves-light red right"><i class="material-icons">add</i></a>
 

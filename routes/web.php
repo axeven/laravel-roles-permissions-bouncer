@@ -1,6 +1,6 @@
 <?php
 
-Route::get('/', 'HomeController@index');
+Route::get('/', 'HomeController@index')->name('home');
 
 // Authentication Routes...
 $this->get('login', 'Auth\LoginController@showLoginForm')->name('auth.login');
@@ -17,6 +17,10 @@ $this->post('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail'
 $this->get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm')->name('password.reset');
 $this->post('password/reset', 'Auth\ResetPasswordController@reset')->name('auth.password.reset');
 
+$this->get('register', 'Auth\RegisterController@showRegistrationForm')->name('register');
+$this->post('register/new', 'Auth\RegisterController@register')->name('register.new');
+$this->get('company_profile', 'SurveyController@add')->name('survey.add');
+
 Route::group(['middleware' => ['auth'], 'prefix' => 'admin', 'as' => 'admin.'], function () {
     Route::resource('abilities', 'Admin\AbilitiesController');
     Route::post('abilities_mass_destroy', ['uses' => 'Admin\AbilitiesController@massDestroy', 'as' => 'abilities.mass_destroy']);
@@ -27,6 +31,7 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'admin', 'as' => 'admin.'], 
     Route::resource('tasks', 'TaskController');
     Route::post('tasks_mass_destroy', ['uses' => 'TasksController@massDestroy', 'as' => 'tasks.mass_destroy']);
     Route::get('questions', 'QuestionController@index')->named('questions');
+    Route::post('questions/reorder', 'QuestionController@reorder')->named('questions.reorder');
     Route::resource('questions', 'QuestionController');
     Route::resource('answers', 'AnswerController');
 });

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('content')
+@section('login-content')
     <h3 class="page-title">@lang('global.abilities.title')</h3>
     {!! Form::open(['method' => 'POST', 'route' => ['admin.abilities.store']]) !!}
 

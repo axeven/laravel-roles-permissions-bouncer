@@ -34,8 +34,8 @@ class ChangePasswordController extends Controller
     public function showChangePasswordForm()
     {
         $user = Auth::getUser();
-
-        return view('auth.change_password', compact('user'));
+        $hide_login_menu = true;
+        return view('auth.change_password', compact('user', 'hide_login_menu'));
     }
 
     /**

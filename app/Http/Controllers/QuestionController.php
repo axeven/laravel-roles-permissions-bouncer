@@ -21,6 +21,7 @@ class QuestionController extends Controller
             'select-single' => Lang::get('global.questions.types.single'),
             'select-multiple' => Lang::get('global.questions.types.multiple')
         ];
+        view()->share(['tab_selected' => 'questions']);
     }
 
     public function index(Request $request)
@@ -53,7 +54,7 @@ class QuestionController extends Controller
     {
         $rules = [
             'question.label' => 'required|min:3|unique:question,label',
-            'question.sentence' => 'required|min:10',
+            'question.sentence' => 'required|min:3',
         ];
         if (strpos($request->input('question.type'), 'select')!==false){
             $rules['answers.*.sentence'] = 'required';
@@ -96,7 +97,7 @@ class QuestionController extends Controller
     {
         $rules = [
             'question.label' => 'required|min:3|unique:question,label,'.$question->id.',id',
-            'question.sentence' => 'required|min:10',
+            'question.sentence' => 'required|min:3',
         ];
         if (strpos($request->input('question.type'), 'select') >= 0){
             $rules['answers.*.sentence'] = 'required';
@@ -130,5 +131,26 @@ class QuestionController extends Controller
             $question->answers()->delete();
         }
         return response()->json(['redirect'=> route('admin.questions.index', ['section_id' => $request->input('question.section_id')])]);
+    }
+
+    public function reorder(Request $request){
+        DB::beginTransaction();
+        foreach($request->input('question') as $q){
+            $question = Question::find($q['id']);
+            $question->order = $q['order'];
+            if (!$question->save()){
+                DB::rollback();
+                return response()->json(['error'=> Lang::get('global.question.save_failed')]);
+            }
+        }
+        DB::commit();
+        return response()->json(['redirect' => route('admin.questions.index', ['section_id' => $request->input('section_id')])]);
+    }
+
+    public function destroy(Request $request, Question $question)
+    {
+        $question->answers()->delete();
+        $question->delete();
+        return redirect()->route('admin.questions.index');
     }
 }

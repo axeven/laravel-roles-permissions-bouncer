@@ -4,8 +4,8 @@
         <input type="hidden" name="_token" value="{{ csrf_token() }}"/>
         <div class="row">
             <div class="input-field col s12">
-            <input id="email" type="email" class="validate {{ sizeof($errors->get('email')) > 0 ? 'invalid' : '' }}" value="{{ old('email') }}" name="email" >
-                <label for="email">{{ trans('global.email') }}</label>
+            <input id="loginemail" type="email" class="validate {{ sizeof($errors->get('email')) > 0 ? 'invalid' : '' }}" value="{{ old('email') }}" name="email" >
+                <label for="loginemail">{{ trans('global.email') }}</label>
                 @if(sizeof($errors->get('email')) > 0)
                     <span class="helper-text" data-error="{{ $errors->get('email')[0] }}"></span>
                 @endif
@@ -13,8 +13,8 @@
         </div>
         <div class="row">
             <div class="input-field col s12">
-                <input id="password" type="password" class="validate {{ sizeof($errors->get('password')) > 0 ? 'invalid' : '' }}" name="password">
-                <label for="password">{{ trans('global.password') }}</label>
+                <input id="loginpassword" type="password" class="validate {{ sizeof($errors->get('password')) > 0 ? 'invalid' : '' }}" name="password">
+                <label for="loginpassword">{{ trans('global.password') }}</label>
                 @if(sizeof($errors->get('password')) > 0)
                     <span class="helper-text" data-error="{{ $errors->get('password')[0] }}"></span>
                 @endif
@@ -36,12 +36,12 @@
 </form>
 <script type="text/javascript">
 $(document).ready(function(){
-    $('#email').keyup(canLogin);
-    $('#password').keyup(canLogin);
+    $('#loginemail').keyup(canLogin);
+    $('#loginpassword').keyup(canLogin);
     canLogin();
 });
 function canLogin(){
-    if ($('#email').val() != "" && $('#password').val() != ""){
+    if ($('#loginemail').val() != "" && $('#loginpassword').val() != ""){
         $('#login-btn').attr('disabled', false);
     }else{
         $('#login-btn').prop('disabled', true);

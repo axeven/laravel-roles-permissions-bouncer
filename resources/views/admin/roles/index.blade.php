@@ -1,7 +1,7 @@
 @inject('request', 'Illuminate\Http\Request')
 @extends('layouts.app')
 
-@section('content')
+@section('login-content')
     <h3 class="page-title">@lang('global.roles.title')</h3>
     <p>
         <a href="{{ route('admin.roles.create') }}" class="btn btn-success">@lang('global.app_add_new')</a>

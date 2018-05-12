@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('content')
+@section('login-content')
 <h3 class="page-title">@lang('global.questions.title')</h3>
 <div id="question-form">
     <div class="row">

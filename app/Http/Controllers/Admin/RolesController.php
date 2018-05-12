@@ -12,6 +12,11 @@ use App\Http\Requests\Admin\UpdateRolesRequest;
 
 class RolesController extends Controller
 {
+
+    public function __construct(){
+        view()->share(['tab_selected' => '']);
+    }
+
     /**
      * Display a listing of Role.
      *

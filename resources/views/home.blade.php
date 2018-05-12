@@ -1,5 +1,28 @@
 @extends('layouts.app')
 
+@section('login-content')
+<div>&nbsp;</div>
+<div class="row no-margin-bottom">
+    <div class="col l4">
+        <img class="responsive-img " src="{{ url('images/noimage.jpg') }}" alt="user-logo" />
+    </div> 
+    <div class="col l8">
+        <table>
+            <tr>
+                <td>{{ trans('global.users.fields.name') }}</td>
+                <td>{{ isset($user) ? $user->name : '' }}</td>
+            </tr>
+            <tr>
+                <td>{{ trans('global.email') }}</td>
+                <td>{{ isset($user) ? $user->email : '' }}</td>
+            </tr>
+        </table>
+        <div>&nbsp;</div>
+        <a class="btn" href="{{ route('auth.change_password') }}" >{{ trans('global.change_password') }}</a>
+    </div> 
+</div>
+@endsection
+
 @section('content')
 <div class="row no-margin-bottom">
     <div class="col l12">
