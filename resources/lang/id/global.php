@@ -135,4 +135,6 @@ return [
     'password_not_match' => 'Konfirmasi password tidak sesuai.',
     'profile' => 'Profil',
     'company_status' => 'Status perusahaan',
+    'next' => 'Selanjutnya',
+    'prev' => 'Sebelumnya',
 ];

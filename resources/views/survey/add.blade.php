@@ -10,7 +10,7 @@
                         <li class="tab"><a target="_self" {{ $sectionId == $s->id ? 'class=active' : '' }} href="{{ route('survey.add', ['section_id' => $s->id]) }}">{{ $s->name }}</a></li>
                     @endforeach
                 </ul>
-                <div class="row">
+                <div class="row" id="survey-list">
                     <div class="col l2 .show-on-large"></div>
                     <div class="col l8 m12">
                         @foreach($question as $q)
@@ -38,7 +38,7 @@
         </div>
     </div>
 </div>
-
+<script type="text/javascript" src="{{ url('jquery-loading/jquery.loading.min.js') }}"></script>
 <script type="text/javascript">
 $(document).ready(function(){
     $('#next').click(function(){
@@ -49,7 +49,7 @@ $(document).ready(function(){
     });
 });
 
-function saveAndGoto(sectionId){
+function populateFormData(sectionId){
     let data = {
         _token: "{{ csrf_token() }}",
         section_id: sectionId,
@@ -104,7 +104,25 @@ function saveAndGoto(sectionId){
         }
         data.surveys.push(survey);
     }
+    return data;
+}
+
+function saveAndGoto(sectionId){
+    let data = populateFormData(sectionId);
+    $('#survey-list').loading('destroy');
+    $('#survey-list').loading({
+        overlay: $(createOverlay())
+    });
     console.log(data);
+    $.post("{{ route('survey.record') }}", data, function(response){
+        console.log(response);
+        window.location = response.redirect;
+    }).done(function(){
+        $('#survey-list').loading('destroy');
+    }).fail(function(response){
+        $('#survey-list').loading('destroy');
+        var errors = response.responseJSON;
+    });
 }
 </script>
 

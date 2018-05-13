@@ -39,6 +39,8 @@ class User extends Authenticatable
         return $this->belongsToMany(Role::class, 'role_user');
     }
     
-    
+    public function surveys(){
+        return $this->hasMany('App\Survey');
+    }
     
 }

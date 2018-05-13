@@ -19,4 +19,10 @@ class Question extends Model
     {
         return $this->belongsTo('App\Section');
     }
+
+    public function surveys()
+    {
+        return $this->hasMany('App\Survey');
+    }
+
 }

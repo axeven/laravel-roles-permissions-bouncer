@@ -6,17 +6,19 @@
 <div class="row">
     <div class="col l12 input-field survey" qid="{{ $question->id }}">
         @foreach($question->answers as $answer)
-            <?php $checked = "" ?>
-            @if (isset($survey))
-                @foreach($survey as $s)
-                    @if($s->question->id == $question->id && $s->valint == $answer->id)
-                        <?php $checked = "checked" ?> 
-                    @endif
-                @endforeach
-            @endif
+            <?php 
+                $checked = ""; 
+                $sid = ""; 
+                foreach($surveys as $s){
+                    if($s->question->id == $question->id && $s->answer->id == $answer->id){
+                            $checked = "checked";
+                            $sid = $s->id;
+                    }
+                }
+            ?>
             <p>
                 <label>
-                    <input type="checkbox" class="filled-in" name="checkbox_{{ $question->id }}" {{ isset($survey) ? 'sid='.$survey->id : '' }}  value="{{ $answer->id }}" {{ $checked }} />
+                    <input type="checkbox" class="filled-in" name="checkbox_{{ $question->id }}" {{ $sid != '' ? 'sid='.$sid : '' }}  value="{{ $answer->id }}" {{ $checked }} />
                     <span>{{ $answer->sentence }}</span>
                 </label>
             </p>
