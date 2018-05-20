@@ -22,6 +22,7 @@ $this->post('register/new', 'Auth\RegisterController@register')->name('register.
 // survey
 $this->get('company_profile', 'SurveyController@add')->name('survey.add');
 $this->post('company_profile', 'SurveyController@record')->name('survey.record');
+$this->get('company_analysis', 'ReportController@index')->name('survey.report');
 
 Route::group(['middleware' => ['auth'], 'prefix' => 'admin', 'as' => 'admin.'], function () {
     Route::resource('abilities', 'Admin\AbilitiesController');

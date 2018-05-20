@@ -17,7 +17,7 @@ class SurveyController extends Controller
     }
 
     public function add(Request $request){
-        if (! Gate::allows('survey_add')) {
+        if (! Gate::allows('survey_add') && ! Gate::allows('survey_browse')) {
             return redirect()->route('home');
         }
         $section = [];
@@ -34,9 +34,16 @@ class SurveyController extends Controller
         $temp = $this->getNextPrevSectionId($sections, $sectionId);
         $nextSectionId = $temp['next'];
         $prevSectionId = $temp['prev'];
-        $surveys = Auth::user()->surveys()->get();
+        if (Gate::allows('survey_browse') && $request->has('user_id')){
+            $user = User::find($request->input('user_id'));
+        }else{
+            $user = Auth::user();
+        }
+        $surveys = $user->surveys()->get();
+        $canViewReport = $user->canViewReport();
         return view('survey.add', compact(
-            'sectionId', 'sections', 'question', 'hide_login_menu', 'nextSectionId', 'prevSectionId', 'surveys'
+            'sectionId', 'sections', 'question', 'hide_login_menu', 'nextSectionId', 
+            'prevSectionId', 'surveys', 'canViewReport'
         ));
     }
 
@@ -109,6 +116,9 @@ class SurveyController extends Controller
         if ($request->has('section_id')){
             $sectionId = $request->input('section_id');
         }
+        if (Auth::user()->canViewReport()){
+            Auth::user()->saveReport();
+        }
         return response()->json(['redirect' => route('survey.add', ['section_id' => $sectionId])]);
     }
 
@@ -126,6 +136,6 @@ class SurveyController extends Controller
             }
             $prev = $s->id;
         }
-        return ['prev' => $prev, 'next' => $next];
+        return ['prev' => $prev-1, 'next' => $next];
     }
 }

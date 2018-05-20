@@ -32,8 +32,15 @@
                 </div>                
             </div>
             <div class="card-action center-align">
-                <a id="prev" class="btn green lighten-2">{{ trans('global.prev') }}</a>
-                <a id="next" class="btn green lighten-2">{{ trans('global.next') }}</a>
+                @if ($prevSectionId > 0)
+                    <a id="prev" class="btn green lighten-2">{{ trans('global.prev') }}</a>
+                @endif
+                @if ($nextSectionId > 0)
+                    <a id="next" class="btn green lighten-2">{{ trans('global.next') }}</a>
+                @endif
+                @if ($canViewReport)
+                    <a class="btn right" href="{{ route('survey.report') }}" >{{ trans('global.view_report') }}</a>
+                @endif
             </div>
         </div>
     </div>
